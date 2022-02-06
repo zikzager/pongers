@@ -17,6 +17,14 @@ int fieldDraw(25/*widgth*/, 80/*lenght*/, int posBoardCenterPlayer1, int posBoar
                 printf("%c",'\n');
                 continue;
             }
+            if (((y == posBoardCenterPlayer1) || (y == posBoardCenterPlayer1+1) || (y == posBoardCenterPlayer1-1)) && x == 2) {
+                printf("]");
+                continue;
+            }
+            if (((y == posBoardCenterPlayer2) || (y == posBoardCenterPlayer2+1) || (y== posBoardCenterPlayer2-1)) && x == 79) {
+                printf("[");
+                continue;
+            }
             if((y!=0)&&(y!=25)) { //ПРОБЕЛЫ
                 printf("%c",' ');
                 
