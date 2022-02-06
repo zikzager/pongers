@@ -1,6 +1,6 @@
 //I WANT TO PLAY WITH YOU
 //        YOUR FRIEND, AI
-int fieldDraw(25/*widgth*/, 80/*lenght*/, posBoardCenterPlayer1, posBoardCenterPlayer1, posBallX, poBallY) {
+int fieldDraw(25/*widgth*/, 80/*lenght*/, int posBoardCenterPlayer1, int posBoardCenterPlayer2, int posBallX, int posBallY) {
     for (int y = 0; y<=25; y++) {
         for (int x = 1; x<=80; x++) {
                 if (((x==1) || (x==80)) && (y!=0)){ //отрисовка горизонтальных черт
@@ -24,6 +24,27 @@ int fieldDraw(25/*widgth*/, 80/*lenght*/, posBoardCenterPlayer1, posBoardCenterP
         }
     }
 }
+
+int nextBallPosX(int posBall, int prevBallPos, width) {юб // след позиция по Х
+    if ((prevBallPos > posBall) || posBall == (width-1)) {
+        return (posBall-1); // left
+    }
+    if ((prevBallPosX < posBallX) || posBall == (1)) {
+        return (posBall+1); // right
+    }
+}
+
+int nextBallPosY(int posBall, int prevBallPos, hight) { // след позиция по Y
+    
+    if ((prevBallPos > posBall) || posBall == (hight-1)) {
+        return (posBall-1);// up
+    }
+    if (prevBallPos < posBall) || (posBall == 1){
+        return (posBall+1);// down
+    }
+    return (posBall);
+}
+
 
 int shiftPosYplayer1(int pos) {
     getc(stdin); //фитрация ввода после  enter
