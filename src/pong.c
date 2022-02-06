@@ -4,20 +4,17 @@
 
 
 void fieldDraw(int width, int lenght, int posBoardCenterPlayer1, int posBoardCenterPlayer2, int posBallX, int posBallY) {
-   // system ("clear");
+   system ("clear");
     for (int y = 0; y<=width; y++) {
         for (int x = 0; x<=lenght; x++) {
                 if (((x==0) || (x==lenght))){ //отрисовка горизонтальных черт
-                   if (y!=0)
                        printf("%c",'|');
-                    else
-                        printf("%c",' ');
                     if (x==80)
                         printf("%c", '\n');
                 continue;
             }
             if((y==0)||(y==width)){ //отрисовка горизонтальных черты
-                printf("%c",'_');
+                printf("%c",'-');
                 continue;
             }
             if ((y == posBallY) && (x == posBallX)) { // отрисовка мяча
@@ -44,20 +41,32 @@ void fieldDraw(int width, int lenght, int posBoardCenterPlayer1, int posBoardCen
 }
 
 int nextBallPosX(int posBall, int prevBallPos, int width) { // след позиция по Х
-    if ((prevBallPos > posBall) || posBall == (width-1)) {
+    if (posBall == (width-1)){
         return (posBall-1); // left
     }
-    if ((prevBallPos < posBall) || posBall == (1)) {
+    if (posBall == 1){
+        return (posBall+1); // right
+    }
+    if (prevBallPos > posBall) {
+        return (posBall-1); // left
+    }
+    if (prevBallPos < posBall) {
         return (posBall+1); // right
     }
 }
 
 int nextBallPosY(int posBall, int prevBallPos, int width) { // след позиция по Y
     
-    if ((prevBallPos > posBall) || posBall == (width-1)) {
+    if(posBall == 1) {
+        return (posBall+1); // down
+    }
+    if (posBall == width) {
+         return (posBall-1); // up
+    }
+    if (prevBallPos > posBall) {
         return (posBall-1); // up
     }
-    if ((prevBallPos < posBall) || (posBall == 1)){
+    if (prevBallPos < posBall){
         return (posBall+1); // down
     }
     return (posBall);
@@ -99,14 +108,24 @@ int shiftPosYplayer2(int pos) { // смещение ракетки 2ого иг�
 }
 
 int main(){
-    int posBallX = 0, posBallY= 0, prevPosBallX = 0, prevPosBallY = 0; // позиция мяча
+    int posBallX = 0, posBallY= 0, prevPosBallX = 0, prevPosBallY = 0, nextPosBallX =0, nextPosBallY = 0; // позиция мяча
     int posBoardCenterPlayer1 = 0, posBoardCenterPlayer2 = 0; // позиции ракеток
     int widthY = 25, lenghtX = 80; // размеры поля
-    int score1 = 0; score2 = 0; // очки игроков
+    int score1 = 0, score2 = 0; // очки игроков
     posBoardCenterPlayer2 = posBoardCenterPlayer1 = posBallY = widthY/2;
     posBallX = lenghtX/2;
+    prevPosBallX = posBallX-1;
+    prevPosBallY = posBallY-1;
     do {
-    fieldDraw(widthY+1, lenghtX, posBoardCenterPlayer1, posBoardCenterPlayer2, posBallX, posBallY);
-    }while();
+        fieldDraw(widthY+1, lenghtX, posBoardCenterPlayer1, posBoardCenterPlayer2, posBallX, posBallY);
+        nextPosBallX = nextBallPosX(posBallX, prevPosBallX, lenghtX);
+        nextPosBallY = nextBallPosY(posBallY, prevPosBallY, widthY);
+        prevPosBallY=posBallY;
+        prevPosBallX=posBallX;
+        posBallX=nextPosBallX;
+        posBallY=nextPosBallY;
+        printf("posX:%d posY:%d prevX:%d prevY:%d", posBallX,posBallY,prevPosBallX, prevPosBallY);
+        getchar();
+    } while((score1 < 21) && (score2 < 21));
     return 0;
 }
