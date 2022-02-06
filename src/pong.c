@@ -73,39 +73,41 @@ int nextBallPosY(int posBall, int prevBallPos, int width) { // след пози
 }
 
 
-int shiftPosYplayer1(int pos) { // смешение центра ракетки 1ого игрока
-    getc(stdin); //фитрация ввода после  enter
-    char endCheck = '\n', input = ' ';
-    scanf("%c%c", &input, &endCheck);
-    if (input == '\n')
+int shiftPosYplayer1(int pos, int widthY) { // смешение центра ракетки 1ого игрока
+    char input = ' ';
+    printf("Player 1 turn:");
+    scanf("%c", &input);
+    getc(stdin);
+    if (input == '\n') {
         return pos;
-    if (endCheck=='\n'){
-        if (input == 'a')
-            return (pos-1);
-        if (input == 'z') {
-            return (pos+1);
-        }
-    } else {
-        return pos;
+        
     }
+    if ((input == 'a') && (pos != 1)) {
+        return (pos-1);
+    }
+    if ((input == 'z') && (pos != widthY)) {
+        return (pos+1);
+    }
+    return pos;
 }
 
-int shiftPosYplayer2(int pos) { // смещение ракетки 2ого игрока
-    getc (stdin); //фитрация ввода после  enter
-    char endCheck='\n', input = ' ';
-    scanf("%c%c", &input, &endCheck);
-    if (input == '\n')
-        return pos;
-    if (endCheck=='\n'){
-        if (input == 'k')
+int shiftPosYplayer2(int pos, int widthY) { // смещение ракетки 2ого игрока
+        char input = ' ';
+        printf("Player 2 turn:");
+        scanf("%c", &input);
+        getc(stdin);
+        if (input == '\n') {
+            return pos;
+            
+        }
+        if ((input == 'k') && (pos != 1)) {
             return (pos-1);
-        if (input == 'm') {
+        }
+        if ((input == 'm') && (pos != widthY)) {
             return (pos+1);
         }
-    } else {
         return pos;
     }
-}
 
 int main(){
     int posBallX = 0, posBallY= 0, prevPosBallX = 0, prevPosBallY = 0, nextPosBallX =0, nextPosBallY = 0; // позиция мяча
@@ -124,8 +126,9 @@ int main(){
         prevPosBallX=posBallX;
         posBallX=nextPosBallX;
         posBallY=nextPosBallY;
-        printf("posX:%d posY:%d prevX:%d prevY:%d", posBallX,posBallY,prevPosBallX, prevPosBallY);
-        getchar();
+        posBoardCenterPlayer1 = shiftPosYplayer1(posBoardCenterPlayer1,widthY);
+        posBoardCenterPlayer2 = shiftPosYplayer2(posBoardCenterPlayer2,widthY);
+        printf("posX:%d posY:%d prevX:%d prevY:%d\n", posBallX,posBallY,prevPosBallX, prevPosBallY);
     } while((score1 < 21) && (score2 < 21));
     return 0;
 }
