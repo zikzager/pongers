@@ -4,7 +4,6 @@
 
 
 void fieldDraw(int width, int lenght, int posBoardCenterPlayer1, int posBoardCenterPlayer2, int posBallX, int posBallY) {
-   system ("clear");
     for (int y = 0; y<=width; y++) {
         for (int x = 0; x<=lenght; x++) {
                 if (((x==0) || (x==lenght))){ //отрисовка горизонтальных черт
@@ -53,6 +52,7 @@ int nextBallPosX(int posBall, int prevBallPos, int width) { // след пози
     if (prevBallPos < posBall) {
         return (posBall+1); // right
     }
+    return 0;
 }
 
 int nextBallPosY(int posBall, int prevBallPos, int width) { // след позиция по Y
@@ -80,7 +80,6 @@ int shiftPosYplayer1(int pos, int widthY) { // смешение центра р�
     getc(stdin);
     if (input == '\n') {
         return pos;
-        
     }
     if ((input == 'a') && (pos != 1)) {
         return (pos-1);
@@ -119,6 +118,9 @@ int main(){
     prevPosBallX = posBallX-1;
     prevPosBallY = posBallY-1;
     do {
+        // printf("nextX:%d nextY:%d posX:%d posY:%d play1:%d play2:%d\n", posBallX,posBallY,prevPosBallX, prevPosBallY, posBoardCenterPlayer1, posBoardCenterPlayer2);
+        // getc(stdin); отладка
+        printf("Score %d ; %d\n", score1, score2);
         fieldDraw(widthY+1, lenghtX, posBoardCenterPlayer1, posBoardCenterPlayer2, posBallX, posBallY);
         nextPosBallX = nextBallPosX(posBallX, prevPosBallX, lenghtX);
         nextPosBallY = nextBallPosY(posBallY, prevPosBallY, widthY);
@@ -126,9 +128,27 @@ int main(){
         prevPosBallX=posBallX;
         posBallX=nextPosBallX;
         posBallY=nextPosBallY;
-        posBoardCenterPlayer1 = shiftPosYplayer1(posBoardCenterPlayer1,widthY);
-        posBoardCenterPlayer2 = shiftPosYplayer2(posBoardCenterPlayer2,widthY);
-        printf("posX:%d posY:%d prevX:%d prevY:%d\n", posBallX,posBallY,prevPosBallX, prevPosBallY);
+        posBoardCenterPlayer1 = shiftPosYplayer1(posBoardCenterPlayer1,widthY); // считывание команд управления 1 игрока
+        posBoardCenterPlayer2 = shiftPosYplayer2(posBoardCenterPlayer2,widthY); // считывание команд управления 2 игрока
+        if (prevPosBallX == 1) { // проверка совпадения левой доски и мяча
+            if ((prevPosBallY != posBoardCenterPlayer1)||(prevPosBallY != posBoardCenterPlayer1-1)||(prevPosBallY != posBoardCenterPlayer1+1)) {
+                score2++;
+                posBoardCenterPlayer2 = posBoardCenterPlayer1 = posBallY = widthY/2;
+                posBallX = lenghtX/2;
+                prevPosBallX = posBallX-1;
+                prevPosBallY = posBallY-1;
+            }
+        }
+        if (prevPosBallX == (lenghtX-1)) { // проверка совпадения правой доски и мяча
+            if ((prevPosBallY != posBoardCenterPlayer1)||(prevPosBallY != posBoardCenterPlayer2-1)||(prevPosBallY != posBoardCenterPlayer2+1)) {
+                score1++;
+                posBoardCenterPlayer2 = posBoardCenterPlayer1 = posBallY = widthY/2;
+                posBallX = lenghtX/2;
+                prevPosBallX = posBallX+1;
+                prevPosBallY = posBallY+1;
+            }
+        }
+        system ("clear");
     } while((score1 < 21) && (score2 < 21));
     return 0;
 }
